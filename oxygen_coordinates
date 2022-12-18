@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#conda activate
+
+function func_thread {
+python pdb2xyz.py $1.pdb $1.xyz;
+sed -i '/O/!d' $1.xyz;
+sed 's/[O]//g' $1.xyz > $1;
+mv $1 cmake-build-debug/coordinates_only;
+rm $1.xyz
+}
+
+mkdir cmake-build-debug/coordinates_only
+
+for (( a = 0; a < 6; a++ ))
+do
+func_thread base_p-1.pos_$a &
+done
